@@ -21,7 +21,8 @@ class CategoryController extends Controller
         $news = $this->getNews(null, $idi);
         
         return view('news.index', [
-            'newsList' => $news
+            'newsList' => $news,
+            'idi' => $idi
         ]);
     }
 }

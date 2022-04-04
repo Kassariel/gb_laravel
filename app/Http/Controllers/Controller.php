@@ -50,12 +50,15 @@ class Controller extends BaseController
         }
         
         $data = [];
-        for($i=0; $i < 10; $i++){
+        for($i=0; $i < 9; $i++){
+            $rand = mt_rand(0,4);
+            $cat = $idi ? $idi-1 : $rand;
             $id = $i +1;
             $data[] = [
                 'id' => $id,
                 'title' => $faker->jobTitle(),
-                'category' => $categories[$idi ? $idi-1 : mt_rand(0,4)]['category'],
+                'catid' => $categories[$cat]['id'],
+                'category' => $categories[$cat]['category'],
                 'author' => $faker->userName(),
                 'image' => $faker->imageUrl(250, 170),
                 'status' => $statusList[mt_rand(0,2)],

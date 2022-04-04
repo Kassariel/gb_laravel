@@ -33,6 +33,6 @@ Route::get('/categories/{idi}', [CategoryController::class, 'show'])->name('cat.
 
 //Admin routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
-     Route::resource('admin/categories', AdminCategoryController::class);
-     Route::resource('admin/news', AdminNewsController::class);
+     Route::resource('/categories', AdminCategoryController::class);
+     Route::resource('/news', AdminNewsController::class);
 });

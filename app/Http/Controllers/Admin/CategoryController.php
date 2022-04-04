@@ -14,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        echo "Список категорий";
+        
+        return view("admin.categories.index");
     }
 
     /**
@@ -24,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        echo "Добавление категорий";
+        return view("admin.categories.create");
     }
 
     /**
@@ -57,7 +58,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view("admin.categories.edit");
     }
 
     /**
