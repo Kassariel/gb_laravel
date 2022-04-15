@@ -24,11 +24,13 @@ class NewsSeeder extends Seeder
         $faker = Factory::create();
         $data = [];
         
+        for($cid=1; $cid < 6; $cid++){
+        
         for($i=0; $i < 9; $i++){
             
         
             $data[] = [
-                'category_id' => 5,
+                'category_id' => $cid,
                 'title' => $faker->jobTitle(),
                 'status' => 'ACTIVE',
                 'author' => $faker->userName(),
@@ -37,6 +39,7 @@ class NewsSeeder extends Seeder
             ];
                
         }
+            }
         return $data;
     }
 }

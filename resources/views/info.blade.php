@@ -61,6 +61,7 @@
         </div>
       </div>
     </div>
+    @include('inc.messages')
      <form method="post" action="{{ route('info.store') }}">
              @csrf
               <div class="form-group">
@@ -69,7 +70,7 @@
               </div>
               <div class="form-group">
                   <label for="phone">Телефон</label>
-                  <input type="tel" class="form-control" name="phone" id="phone" value="{{ old('phone') }}">
+                  <input type="tel" class="form-control" name="tel" id="tel" value="{{ old('tel') }}">
               </div>
               <div class="form-group">
                   <label for="email">Email</label>

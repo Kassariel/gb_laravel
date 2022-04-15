@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\News;
-use App\Models\Category;
+use App\Models\Info;
 
-class NewsController extends Controller
+class InfoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +15,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //$news = app(News::class);
-       // dd($news->getNews());
-        return view('admin.news.index', ['newsList' => News::with('category')->paginate(5)]);
+        return view('admin.info.index', ['infoList' => Info::query()->paginate(5)]);
     }
 
     /**
@@ -28,9 +25,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view("admin.news.create", [
-            'categories' => Category::select("id", "title")->get()
-        ]);
+        return view("admin.info.create");
     }
 
     /**
@@ -41,14 +36,10 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => ['required', 'string']
-        ]);
-       // dd($_REQUEST);
-        
-        $news = News::create($request->only(['category_id', 'title', 'status', 'author', 'image', 'description']));
-        if($news) {
-            return redirect()->route('admin.news.index')
+        $data = $request->only(['author', 'tel', 'email', 'url', 'description']);
+        $info = Info::create($data);
+        if($info) {
+            return redirect()->route('admin.info.index')
                 ->with('success', 'Запись успешно добавлена');
         }
         
@@ -69,14 +60,13 @@ class NewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  News $news
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(News $news)
+    public function edit(Info $info)
     {
-        return view('admin.news.edit', [
-            'news' => $news,
-            'categories' => Category::select("id", "title")->get()
+        return view('admin.info.edit', [
+            'info' => $info
         ]);
     }
 
@@ -84,14 +74,15 @@ class NewsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  News $news
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(Request $request, Info $info)
     {
-        $status = $news->fill($request->only(['category_id', 'title', 'status', 'author', 'image', 'description']))->save();
+        $status = $info->fill($request->only(['author', 'tel', 'email', 'url', 'description']))->save();
+        
         if($status) {
-            return redirect()->route('admin.news.index')
+            return redirect()->route('admin.info.index')
                 ->with('success', 'Запись успешно обновлена');
         }
         

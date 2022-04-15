@@ -16,27 +16,28 @@
       </div>
       
       <div class="table-responsive">
+         @include('inc.messages')
           <table class="table table-bordered">
               <thead>
                   <tr>
                       <th>#ID</th>
-                      <th>Заголовок</th>
                       <th>Категория</th>
-                      <th>Автор</th>
+                      <th>Заголовок</th>
                       <th>Статус</th>
                       <th>Описание</th>
+                      <th>Дата редактирования</th>
                       <th>Опции</th>
                   </tr>
               </thead>
               <tbody>
-                  @forelse($news as $news)
+                  @forelse($newsList as $news)
                       <tr>
                           <td>{{$news->id}}</td>
+                          <td>{{$news->category->title}}</td>
                           <td>{{$news->title}}</td>
-                          <td>{{$news->categoryTitle}}</td>
-                          <td>{{$news->author}}</td>
                           <td>{{$news->status}}</td>
                           <td>{{$news->description}}</td>
+                          <td>@if($news->updated_at) {{ $news->updated_at->format('d-m-Y H:i') }} @endif</td>
                           <td>
                               <a href="{{ route('admin.news.edit', ['news' => $news->id]) }}">Ред.</a>
                               &nbsp;
@@ -48,6 +49,7 @@
                   @endforelse
               </tbody>
           </table>
+          {{ $newsList->links() }}
       </div>
 @endsection
 

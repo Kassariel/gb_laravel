@@ -6,10 +6,10 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="{{route('main')}}" class="nav-link px-2 text-secondary">Главная</a></li>
-          <li><a href="{{route('news')}}" class="nav-link px-2 text-white">Новости</a></li>
-          <li><a href="{{route('cat')}}" class="nav-link px-2 text-white">Категории</a></li>
-          <li><a href="{{route('info')}}" class="nav-link px-2 text-white">О нас</a></li>
+          <li><a href="{{route('main')}}" class="nav-link px-2 @if(request()->routeIs('main')) text-secondary @else text-white @endif">Главная</a></li>
+          <li><a href="{{route('news')}}" class="nav-link px-2 @if(request()->routeIs('news') || request()->routeIs('news.*')) text-secondary @else text-white @endif">Новости</a></li>
+          <li><a href="{{route('cat')}}" class="nav-link px-2 @if(request()->routeIs('cat') || request()->routeIs('cat.*')) text-secondary @else text-white @endif">Категории</a></li>
+          <li><a href="{{route('info')}}" class="nav-link px-2 @if(request()->routeIs('info')) text-secondary @else text-white @endif">О нас</a></li>
         </ul>
 
 
@@ -20,3 +20,5 @@
       </div>
     </div>
   </header>
+  
+ 

@@ -19,6 +19,12 @@
               Новости
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link @if(request()->routeIs('admin.info.*')) active @endif" href="{{ route('admin.info.index') }}">
+              <span data-feather="list"></span>
+              Запросы
+            </a>
+          </li>
          
         </ul>
 
