@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Http\Requests\Categories\EditRequest;
+use App\Http\Requests\Categories\CreateRequest;
 
 class CategoryController extends Controller
 {
@@ -14,8 +17,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        
-        return view("admin.categories.index");
+       // $category = app(Category::class);
+        //dd($category->getCategoryById(9));
+        //dd(\DB::table('categories')->avg('id'));
+        //dd(Category::find(5));   
+                
+        return view('admin.categories.index', ['categories' => Category::query()->active()->withCount('news')->paginate(5)]);
     }
 
     /**
@@ -32,11 +39,19 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
+        //return response()->json($request->only('title', 'description'), 201 );
+        
+        $category = Category::create($request->validated());
+        if($category) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', __('messages.admin.categories.create.success'));
+        }
+        
+        return back()->with('error', __('messages.admin.categories.create.fail'));
     }
 
     /**
@@ -53,24 +68,39 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        return view("admin.categories.edit");
+        //$category = Category::findOrFail($id);
+        return view('admin.categories.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Category $category
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(EditRequest $request, Category $category)
     {
-        //
+        //$category->title = $request->input('title');
+        //$category->description = $request->input('description');
+        
+        $status = $category->fill($request->validated())->save();
+        
+        
+        
+        if($status) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', __('messages.admin.categories.update.success'));
+        }
+        
+        return back()->with('error', __('messages.admin.categories.update.fail'));
     }
 
     /**
@@ -79,8 +109,15 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        try{
+            $category->delete();
+            
+            return response()->json(['status' => 'ok']);
+        }catch (\Exeption $e) {
+            \Log::error("Category wasn't delete");
+            return response()->json(['status' => 'error'], 400);
+        }
     }
 }
