@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -14,8 +15,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $category = app(Category::class);
+        //dd($category->getCategoryById(9));
+        //dd(\DB::table('categories')->avg('id'));
         
-        return view("admin.categories.index");
+        return view('admin.categories.index', ['categories' => $category->getCategories()]);
     }
 
     /**
@@ -36,7 +40,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json(
+        $request->only('title', 'description'), 201
+        );
     }
 
     /**
