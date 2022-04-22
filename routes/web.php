@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\InfoController as AdminInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +39,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
      Route::get('/', AdminController::class)->name('index');
      Route::resource('/categories', AdminCategoryController::class);
      Route::resource('/news', AdminNewsController::class);
+     Route::resource('/info', AdminInfoController::class);
+    
+});
+
+
+Route::get('collection', function() {
+    $array = ["Mike", "Pike", "Ann", "Kate"];
+    $collection = collect($array);
+    
+    dd($collection->sort()->map(function($item) {
+        return "Name " . $item;
+    }));
 });

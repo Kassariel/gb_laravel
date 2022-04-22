@@ -13,6 +13,7 @@
       </div>
       
       <div class="raw">
+         @include('inc.messages')
           <form method="post" action="{{ route('admin.categories.store') }}">
              @csrf
               <div class="form-group">

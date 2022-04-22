@@ -13,6 +13,7 @@
           <div class="row py-lg-5">
     <div class="col-lg-6 col-md-8 mx-auto">
       <h1 class="fw-light">Напишите нам</h1>
+      @include('inc.messages')
        <form method="post" action="{{ route('main.store') }}">
              @csrf
               <div class="form-group">
