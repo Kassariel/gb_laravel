@@ -14,11 +14,40 @@
 
 
         <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2">Login</button>
-          <button type="button" class="btn btn-warning">Sign-up</button>
+           @guest
+                        @if (Route::has('login'))
+                                <a href="{{ route('login') }}" type="button" class="btn btn-outline-light me-2">Войти</a>
+                        @endif
+
+                        @if (Route::has('register'))
+                                <a href="{{ route('register') }}" type="button" class="btn btn-warning">Регистрация</a>
+                        @endif
+                        @else
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                  @if(Auth::user()->is_admin)
+                                   <a class="dropdown-item" href="{{ route('admin.index') }}">В админку</a>
+                                   @endif
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Выйти') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+             @endguest
         </div>
       </div>
     </div>
   </header>
   
- 

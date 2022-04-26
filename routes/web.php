@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\InfoController as AdminInfoController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Account\IndexController as AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,13 +36,23 @@ Route::get('/news/{id}', [NewsController::class, 'show'])
 Route::get('/categories', [CategoryController::class, 'index'])->name('cat');
 Route::get('/categories/{idi}', [CategoryController::class, 'show'])->name('cat.show');
 
-//Admin routes
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
-     Route::get('/', AdminController::class)->name('index');
-     Route::resource('/categories', AdminCategoryController::class);
-     Route::resource('/news', AdminNewsController::class);
-     Route::resource('/info', AdminInfoController::class);
-    
+Route::group(['middleware' => 'auth'], function() {
+    Route::group(['prefix' => 'account', 'as' => 'account.'], function () {
+        Route::get('/', AccountController::class)->name('index');
+        Route::get('loguot', function () {
+            \Auth::loguot();
+            return redirect()->route('login');
+        })->name('loguot');
+    });
+    //Admin routes
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin.check'], function() {
+         Route::get('/', AdminController::class)->name('index');
+         Route::resource('/categories', AdminCategoryController::class);
+         Route::resource('/news', AdminNewsController::class);
+         Route::resource('/info', AdminInfoController::class);
+         Route::resource('/users', AdminUserController::class);
+
+    });
 });
 
 
@@ -52,3 +64,14 @@ Route::get('collection', function() {
         return "Name " . $item;
     }));
 });
+
+Route::get('session', function() {
+
+        dd(session()->all());
+
+    
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
