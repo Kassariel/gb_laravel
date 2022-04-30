@@ -50,4 +50,6 @@ class User extends Authenticatable
     {
         return \DB::table($this->table)->select("id", "name", "email", "is_admin")->get()->toArray();
     }
+    
+    public $timestamps =false;
 }
